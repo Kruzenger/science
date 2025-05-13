@@ -1,6 +1,7 @@
 from vkbottle import VKAPIError
 from vkbottle.api import API
 from secrets import VK_ACCESS_TOKEN
+import asyncio
 
 class VKPulling:
     def __init__(self, vk_token: str = VK_ACCESS_TOKEN):
@@ -16,3 +17,13 @@ class VKPulling:
         print("ended pulling " + group_id)
         return posts
         
+vk_pulling = VKPulling()
+
+async def printData(data):
+    print(await data)
+
+async def groupPullingFactoryTask(group_id, sleepTime):
+    loop = asyncio.get_running_loop()
+    while True:
+        loop.create_task(vk_pulling.pullGroupPosts(group_id=group_id))
+        await asyncio.sleep(sleepTime)
