@@ -1,5 +1,6 @@
 import asyncio
 from VKPulling import groupPullingFactoryTask
+from config import log
 
 class Controller:
     def __init__(self, initGroups: dict = dict()):
@@ -13,7 +14,7 @@ class Controller:
                 await task
             except asyncio.CancelledError:
                 pass
-            print("removed all targets for pulling")
+            log.debug("removed all targets for pulling")
             self.groups.clear()
                 
 
@@ -23,7 +24,7 @@ class Controller:
 
         task = self.loop.create_task(groupPullingFactoryTask(group_id, sleepTime=5))
         self.groups[group_id] = task
-        print(f"added for pulling: {group_id}")
+        log.debug(f"added for pulling: {group_id}")
 
     async def remove(self, group_id: str):
         if self.groups.get(group_id) != None:
@@ -31,7 +32,7 @@ class Controller:
             try:
                 await self.groups[group_id]
             except asyncio.CancelledError:
-                print(f"removed for pulling: {group_id}")
+                log.debug(f"removed for pulling: {group_id}")
                 self.groups.pop(group_id)
     
 async def controllerTask():
