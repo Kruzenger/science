@@ -6,28 +6,34 @@ class Controller:
         self.groups: dict = initGroups
         self.loop = asyncio.get_running_loop()
     
-    def clear(self):
+    async def clear(self):
         for task in self.groups.items:
+            task.cancel()
             try:
-                task.cancel()
-            except asyncio.CancelledError as e:
-                print(e)
+                await task
+            except asyncio.CancelledError:
+                pass
+            print("removed all targets for pulling")
+            self.groups.clear()
+                
 
-    def add(self, group_id: str):
+    async def add(self, group_id: str):
         if self.groups.get(group_id) != None:
             return
 
-        print("added for pulling " + group_id)
         task = self.loop.create_task(groupPullingFactoryTask(group_id, sleepTime=5))
         self.groups[group_id] = task
-        task.add_done_callback(self.groups.pop(group_id))
+        print(f"added for pulling: {group_id}")
 
-    def remove(self, group_id: str):
+    async def remove(self, group_id: str):
         if self.groups.get(group_id) != None:
             self.groups[group_id].cancel()
+            try:
+                await self.groups[group_id]
+            except asyncio.CancelledError:
+                print(f"removed for pulling: {group_id}")
+                self.groups.pop(group_id)
     
-
 async def controllerTask():
     controller = Controller()
-    controller.add("miptdndleague")
-    controller.add("lovelycosplay")
+    await controller.add("public192867633")
