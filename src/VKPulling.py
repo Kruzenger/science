@@ -21,7 +21,8 @@ class VKPulling:
                 posts_pack = await self.api.request("wall.get", {"domain": group_id})
                 posts = posts_pack["response"]["items"]
             except VKAPIError as error:
-                log.debug(f"Couldn't get new post id for group_id = {group_id}. Error: {error}")
+                log.debug(f"couldn't get new post id for group_id = {group_id}. Error: {error}")
+                return
         else:
             POST_COUNT = 10 # max number of posts available to collect
             for i in range(iteration_limit):
@@ -34,9 +35,11 @@ class VKPulling:
             
         if(len(posts) != 0):
             self.last_post[group_id] =  max([post["id"] for post in posts])
-        log.debug(f"last pulled id from group {group_id}: {self.last_post[group_id]}")
+            log.debug(f"new last pulled id from group {group_id}: {self.last_post[group_id]}")
 
         log.debug(f"ended pulling: {group_id}")
+        print(posts)
+        
         return posts
 
 async def groupPullingFactoryTask(group_id, sleepTime):
