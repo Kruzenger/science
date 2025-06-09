@@ -7,14 +7,28 @@ class EKafkaAdminCommandType(Enum):
 @dataclass
 class KafkaAdminCommandContent:
     @dataclass
-    class TopicParametrs:
+    class TopicParameters:
         num_partitions: int
         replication_factor: int
 
-    command_type: EKafkaAdminCommandType
+        def __init__(self, parameters: list):
+            self.num_partitions = parameters[0]
+            self.replication_factor = parameters[1]
+
+    command_type: int
     id: int
     topics_names: list
-    topics_parametrs: dict[str, TopicParametrs]
+    topics_parameters: dict[str, list]
 
-    def getTopicParametrs(self, name):
-        return self.topics_parametrs.get(name)
+    def __init__(self):
+        pass
+
+    def __init__(self, command_type, id, topics_names, topics_parameters):
+        self.command_type = command_type
+        self.id = id
+        self.topics_names = topics_names
+        self.topics_parameters = topics_parameters
+
+    def getTopicParameters(self, name):
+        raw_parameters = self.topics_parameters.get(name)
+        return self.TopicParameters(raw_parameters)
