@@ -1,7 +1,11 @@
+from Commands.CommandFactory import CommandFactory
+from Commands.CommandEncoder import CommandEncoder
 from Logger import Logger
-import asyncio
 
 log = Logger()
+
+CMD_FACTORY = CommandFactory()
+CMD_ENCODER = CommandEncoder()
 
 target_groups_ids: list = ["public192867633", 
                            "lovelycosplay", 
@@ -22,3 +26,7 @@ target_groups_ids: list = ["public192867633",
                            "knigiprint", 
                            "cpp_lib", 
                            "resf"]
+
+DEFAULT_TOPIC_PREFIX: str = ""
+KAFKA_ADMIN_COMMAND_TOPIC_NAME: str = "kafka_admin_commands"
+FETCHER_ADMIN_COMMAND_TOPIC_NAME: str = "fetcher_admin_commands"
