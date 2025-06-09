@@ -3,7 +3,7 @@ from Commands.Command import Command, ECommandTargetTypes
 from Commands.KafkaAdminCommand import KafkaAdminCommandContent
 from Commands.FetcherAdminCommand import FetcherAdminCommandContent
 from dataclasses import asdict
-from Logger import Logger
+from Utils.Logger import Logger
 import dacite
 import json
 

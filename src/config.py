@@ -1,6 +1,6 @@
 from Commands.CommandFactory import CommandFactory
 from Commands.CommandEncoder import CommandEncoder
-from Logger import Logger
+from Utils.Logger import Logger
 
 log = Logger()
 

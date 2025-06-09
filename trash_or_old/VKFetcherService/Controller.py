@@ -53,3 +53,19 @@ async def controllerTask():
 
 
 
+def processCommand(self):
+    match self.__command.content.command_type:
+        case EFetcherAdminCommandType.ADD_GROUP_TO_OBSERVE.value:
+            self.addGroupToObserve()
+        case EFetcherAdminCommandType.ADD_API_TOKEN.value:
+            self.addAPIToken()
+
+def addGroupToObserve(self):
+    self.__sendCommandToManager()
+
+def addAPIToken(self):
+    pass
+
+
+
+
