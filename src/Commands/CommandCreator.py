@@ -3,7 +3,7 @@ from Commands.KafkaAdminCommand import KafkaAdminCommandContent, EKafkaAdminComm
 from Commands.FetcherAdminCommand import FetcherAdminCommandContent, EFetcherAdminCommandType, ESocialMediaType
 from Commands.Command import Command, ECommandTargetTypes
 
-class CommandFactory(Singleton):
+class CommandCreator(metaclass=Singleton):
     __last_id: int = 0
 
     @property
@@ -26,5 +26,3 @@ class CommandFactory(Singleton):
                 )
             )
         
-
-CMD_FACTORY = CommandFactory()

@@ -9,12 +9,13 @@ import json
 
 log = Logger()
 
-class CommandEncoder(Singleton):
+class Encoder(metaclass=Singleton):
     def encodeCommandToJSON(self, command: Command):
-        return json.dumps(asdict(command), ensure_ascii=False).encode(encoding="utf-8")
+        return self.encodeData(asdict(command))
+
 
     def decodeCommandFromJSON(self, raw_command: str):
-        structured_command = json.loads(raw_command.decode("utf-8"))
+        structured_command = self.decodeData(raw_command)
         match structured_command["target_type"]:
             case ECommandTargetTypes.KAFKA_ADMIN.value:
                 command = dacite.from_dict(data_class=Command[KafkaAdminCommandContent], data=structured_command)
@@ -23,3 +24,10 @@ class CommandEncoder(Singleton):
             case _:
                 command = None
         return command
+    
+
+    def encodeData(self, data):
+        return json.dumps(data, ensure_ascii=False).encode(encoding="utf-8")
+    
+    def decodeData(self, data):
+        return json.loads(data.value.decode("utf-8"))

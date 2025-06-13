@@ -1,13 +1,14 @@
-from Commands.CommandFactory import CommandFactory
-from Commands.CommandEncoder import CommandEncoder
+from Commands.CommandCreator import CommandCreator
+from Utils.Encoder import Encoder
 from Utils.Logger import Logger
+from queue import Queue
 
 log = Logger()
 
-CMD_FACTORY = CommandFactory()
-CMD_ENCODER = CommandEncoder()
+CMD_CREATOR = CommandCreator()
+ENCODER = Encoder()
 
-target_groups_ids: list = ["public192867633", 
+target_groups_ids: set = {"public192867633", 
                            "lovelycosplay", 
                            "miptdndleague", 
                            "stfpmi", 
@@ -25,8 +26,14 @@ target_groups_ids: list = ["public192867633",
                            "anime", 
                            "knigiprint", 
                            "cpp_lib", 
-                           "resf"]
+                           "resf"}
 
 DEFAULT_TOPIC_PREFIX: str = ""
-KAFKA_ADMIN_COMMAND_TOPIC_NAME: str = "kafka_admin_commands"
-FETCHER_ADMIN_COMMAND_TOPIC_NAME: str = "fetcher_admin_commands"
+KAFKA_ADMIN_COMMANDS_TOPIC_NAME: str = "kafka_admin_commands"
+FETCHER_ADMIN_COMMANDS_TOPIC_NAME: str = "fetcher_admin_commands"
+
+VK_FETCHERS_COMMANDS_TOPIC_NAME: str = "vk_fetcher_commands"
+VK_PULLING_TASKS_TOPIC_NAME: str = "vk_pulling_tasks"
+VK_PULLED_POSTS_TOPIC_NAME: str = "vk_posts"
+
+pulling_tasks_queue: Queue = Queue()

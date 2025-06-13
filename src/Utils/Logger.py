@@ -2,12 +2,17 @@ from Utils.Singleton import Singleton
 import time
 
 
-class Logger(Singleton):
+class Logger(metaclass=Singleton):
     def __init__(self): 
         self.file = open("logs.log", "w")
 
+    def benchmark(self, id: str) -> str:
+        log_data = f"[{time.perf_counter()}]: BENCHMARK: {id}\n"
+        self.file.write(log_data)
+        return log_data
+
     def log(self, data: str, prefix: str) -> str:
-        now = time.gmtime(time.perf_counter())
+        now = time.gmtime(time.time())
         log_data = f"[{time.asctime(now)}]: {prefix}: {data}\n"
         self.file.write(log_data)
         return log_data
